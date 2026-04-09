@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flonu – Binge Eating Screening</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;900&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight-moss: #1a3a2f;
+    --thyme: #4a7c59;
+    --celery: #b5c84b;
+    --almond: #f2e8dc;
+    --pomegranate: #b83060;
+    --mango: #e8732a;
+    --lemon: #f0c93a;
+    --white: #ffffff;
+    --text-dark: #1a3a2f;
+    --text-mid: #3d5a4a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lexend', sans-serif;
+    background-color: var(--almond);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background-color: var(--midnight-moss);
+    padding: 20px 32px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -30px;
+    width: 180px;
+    height: 180px;
+    background: var(--mango);
+    border-radius: 50%;
+    opacity: 0.25;
+  }
+
+  .logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2rem;
+    color: var(--white);
+    letter-spacing: -1px;
+    text-decoration: none;
+  }
+
+  .logo span {
+    color: var(--celery);
+  }
+
+  .lang-toggle {
+    display: flex;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .lang-btn {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.7);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .lang-btn.active {
+    background: var(--celery);
+    border-color: var(--celery);
+    color: var(--midnight-moss);
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--midnight-moss);
+    padding: 40px 32px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+
+  .hero-blob-1 {
+    width: 300px; height: 300px;
+    background: var(--celery);
+    bottom: -80px; left: -60px;
+  }
+
+  .hero-blob-2 {
+    width: 200px; height: 200px;
+    background: var(--pomegranate);
+    top: -60px; right: 80px;
+  }
+
+  .hero-content {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: var(--pomegranate);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 .accent {
+    font-family: 'Pacifico', cursive;
+    color: var(--celery);
+    font-weight: 400;
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.72);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+  }
+
+  .progress-bar-bg {
+    height: 6px;
+    background: rgba(74,124,89,0.2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--celery), var(--thyme));
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  .progress-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--thyme);
+    margin-top: 7px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* MAIN CONTAINER */
+  .main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 32px 28px 28px;
+    margin-top: 24px;
+    box-shadow: 0 4px 24px rgba(26,58,47,0.08);
+    animation: slideIn 0.35s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-counter {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--thyme);
+    margin-bottom: 12px;
+  }
+
+  .q-text {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--midnight-moss);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(74,124,89,0.12);
+  }
+
+  .options-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    background: var(--almond);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Lexend', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.5;
+    transition: all 0.18s;
+  }
+
+  .option-btn:hover {
+    background: rgba(74,124,89,0.08);
+    border-color: var(--thyme);
+  }
+
+  .option-btn.selected {
+    background: rgba(74,124,89,0.12);
+    border-color: var(--thyme);
+    font-weight: 600;
+  }
+
+  .option-dot {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--thyme);
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+  }
+
+  .option-btn.selected .option-dot {
+    background: var(--thyme);
+  }
+
+  .option-btn.selected .option-dot::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  /* NAV */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+
+  .btn {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-back {
+    background: transparent;
+    color: var(--thyme);
+    border: 2px solid rgba(74,124,89,0.3);
+  }
+
+  .btn-back:hover {
+    border-color: var(--thyme);
+    background: rgba(74,124,89,0.06);
+  }
+
+  .btn-next {
+    background: var(--midnight-moss);
+    color: var(--white);
+    margin-left: auto;
+  }
+
+  .btn-next:hover:not(:disabled) {
+    background: var(--thyme);
+  }
+
+  .btn-next:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .btn-submit {
+    background: var(--pomegranate);
+    color: var(--white);
+    padding: 16px 36px;
+    margin-left: auto;
+  }
+
+  .btn-submit:hover {
+    background: #9a1f50;
+  }
+
+  /* RESULTS */
+  .results-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px 28px;
+    margin-top: 24px;
+    box-shadow: 0 4px 24px rgba(26,58,47,0.08);
+    animation: slideIn 0.4s ease;
+  }
+
+  .score-ring-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  .score-ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 14px;
+  }
+
+  .score-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .score-ring .score-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .score-num .num {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--midnight-moss);
+    line-height: 1;
+  }
+
+  .score-num .of {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--thyme);
+    letter-spacing: 0.05em;
+  }
+
+  .severity-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .severity-none { background: rgba(181,200,75,0.2); color: #5a6e0a; }
+  .severity-mild { background: rgba(240,201,58,0.25); color: #7a6210; }
+  .severity-severe { background: rgba(184,48,96,0.2); color: var(--pomegranate); }
+
+  .results-title {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--midnight-moss);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .results-subtitle {
+    font-size: 0.85rem;
+    color: var(--thyme);
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(74,124,89,0.12);
+    margin: 24px 0;
+  }
+
+  .results-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--thyme);
+    margin-bottom: 14px;
+  }
+
+  .recommendation-block {
+    background: var(--almond);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+
+  .recommendation-block p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--text-dark);
+  }
+
+  .recommendation-block p + p {
+    margin-top: 10px;
+  }
+
+  .disclaimer {
+    background: rgba(184,48,96,0.06);
+    border-left: 3px solid var(--pomegranate);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 18px;
+    margin-top: 20px;
+  }
+
+  .disclaimer p {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.6;
+  }
+
+  .source-note {
+    text-align: center;
+    font-size: 0.73rem;
+    color: rgba(26,58,47,0.45);
+    margin-top: 22px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .source-note a {
+    color: var(--thyme);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .btn-restart {
+    background: var(--midnight-moss);
+    color: var(--white);
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    margin-top: 20px;
+    border-radius: 12px;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-restart:hover { background: var(--thyme); }
+
+
+
+  footer {
+    background: var(--midnight-moss);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 20px 24px;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+
+  footer a { color: var(--celery); text-decoration: none; font-weight: 600; }
+
+  @media (max-width: 480px) {
+    header { padding: 16px 20px; }
+    .hero { padding: 28px 20px 44px; }
+    .main { padding: 0 16px 60px; }
+    .question-card, .results-card { padding: 24px 18px 20px; }
+    .btn { padding: 12px 20px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">Flo<span>nu</span></a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('de')">DE</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-content">
+    <div class="hero-tag" id="hero-tag">Kostenloses Screening</div>
+    <h1 id="hero-title">Wie ist dein Verhältnis <br>zum <span class="accent">Essen?</span></h1>
+    <p id="hero-desc">Dieser Fragebogen gibt dir einen ersten Hinweis darauf, wie du mit Essimpulsen umgehst. Kein Urteil, keine Diagnose. Nur ein ehrlicher Startpunkt.</p>
+  </div>
+</div>
+
+<div class="progress-wrap" id="progress-wrap" style="display:none;">
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+  </div>
+  <div class="progress-label">
+    <span id="progress-text">Frage 1 von 16</span>
+    <span id="progress-pct">0 %</span>
+  </div>
+</div>
+
+<div class="main">
+  <div id="quiz-container"></div>
+</div>
+
+<footer>
+  &copy; 2025 Flonu / Coach Aleks &nbsp;·&nbsp; <a href="https://flonu.de" target="_blank">flonu.de</a>
+</footer>
+
+<script>
+const translations = {
+  de: {
+    heroTag: 'Kostenloses Screening',
+    heroTitle: 'Wie ist dein Verhältnis <br>zum <span class="accent">Essen?</span>',
+    heroDesc: 'Dieser Fragebogen gibt dir einen ersten Hinweis darauf, wie du mit Essimpulsen umgehst. Kein Urteil, keine Diagnose. Nur ein ehrlicher Startpunkt.',
+    progressLabel: (cur, tot) => `Frage ${cur} von ${tot}`,
+    qCounter: (n) => `Frage ${n} / 16`,
+    btnBack: 'Zurück',
+    btnNext: 'Weiter',
+    btnSubmit: 'Ergebnis anzeigen',
+    btnRestart: 'Nochmal starten',
+    scoreOf: 'von 46',
+    disclaimerLabel: 'Wichtig',
+    sourceLabel: 'Quelle & Methodik',
+    ctaLabel: 'Nächster Schritt',
+    disclaimer: 'Dieser Fragebogen ersetzt keine Diagnose. Bei einem Ergebnis im moderaten oder schweren Bereich empfehle ich dir, das Gespräch mit einer Fachkraft zu suchen, die Essstörungen kennt.',
+    source: 'Binge-Eating Scale (BES) · Gormally et al. (1982). Addictive Behaviors, 7(1), 47–55.',
+    btnDownload: 'Ergebnisse als Bild herunterladen',
+  },  en: {
+    heroTag: 'Free Screening',
+    heroTitle: 'What is your relationship <br>with <span class="accent">food?</span>',
+    heroDesc: 'This questionnaire gives you a first honest look at how you handle eating impulses. No judgement, no diagnosis. Just a starting point.',
+    progressLabel: (cur, tot) => `Question ${cur} of ${tot}`,
+    qCounter: (n) => `Question ${n} / 16`,
+    btnBack: 'Back',
+    btnNext: 'Next',
+    btnSubmit: 'See My Results',
+    btnRestart: 'Start Again',
+    scoreOf: 'out of 46',
+    disclaimerLabel: 'Please note',
+    sourceLabel: 'Source & Methodology',
+    ctaLabel: 'Next Step',
+    disclaimer: 'This questionnaire is not a diagnosis. If your result is in the moderate or severe range, I recommend speaking with a professional who specializes in eating disorders.',
+    source: 'Binge-Eating Scale (BES) · Gormally et al. (1982). Addictive Behaviors, 7(1), 47–55.',
+    btnDownload: 'Download Results as Image',
+  }
+};
+
+const questions = {
+  de: [
+    {
+      text: 'Wie gehst du mit deinem Körperbild in Gegenwart anderer um?',
+      options: [
+        { text: 'Ich schäme mich nicht für mein Gewicht oder meine Figur.', score: 0 },
+        { text: 'Ich mache mir manchmal Gedanken, wie ich auf andere wirke, aber das belastet mich nicht wirklich.', score: 0 },
+        { text: 'Mein Aussehen und mein Gewicht machen mich manchmal unsicher, und das ärgert mich.', score: 1 },
+        { text: 'Ich schäme mich stark für mein Gewicht und vermeide deshalb soziale Situationen.', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie isst du normalerweise?',
+      options: [
+        { text: 'Ich esse in Ruhe und ohne Probleme.', score: 0 },
+        { text: 'Manchmal esse ich schnell, aber ich werde danach nicht unangenehm voll.', score: 1 },
+        { text: 'Manchmal esse ich zu schnell und fühle mich danach unangenehm voll.', score: 2 },
+        { text: 'Ich schling das Essen oft hinunter, ohne richtig zu kauen, und fühle mich danach regelmäßig zu voll.', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie erlebst du deine Kontrolle über das Essen?',
+      options: [
+        { text: 'Wenn ich will, kann ich mein Essverhalten gut kontrollieren.', score: 0 },
+        { text: 'Manchmal habe ich das Gefühl, schlechter als andere mit dem Essen umgehen zu können.', score: 1 },
+        { text: 'Beim Thema Essensteigerungen fühle ich mich oft hilflos.', score: 3 },
+        { text: 'Ich fühle mich so hilflos, dass ich manchmal verzweifelt versuche, irgendwie Kontrolle zurückzugewinnen.', score: 3 },
+      ]
+    },
+    {
+      text: 'Isst du manchmal aus Langeweile?',
+      options: [
+        { text: 'Nein, das tue ich nicht.', score: 0 },
+        { text: 'Manchmal schon, aber ich kann mich dann meist ablenken.', score: 0 },
+        { text: 'Das passiert regelmäßig, aber gelegentlich gelingt es mir, mich auf etwas anderes zu konzentrieren.', score: 0 },
+        { text: 'Ich esse fast immer, wenn ich gelangweilt bin. Ich schaffe es kaum, damit aufzuhören.', score: 2 },
+      ]
+    },
+    {
+      text: 'Isst du manchmal ohne körperlichen Hunger?',
+      options: [
+        { text: 'Ich esse meistens erst, wenn ich wirklich Hunger habe.', score: 0 },
+        { text: 'Manchmal esse ich impulsiv, ohne eigentlich hungrig zu sein.', score: 1 },
+        { text: 'Ich esse oft Dinge, die ich gar nicht mag, um ein Hungergefühl zu stillen, obwohl kein echter Hunger da ist.', score: 2 },
+        { text: 'Ich spüre manchmal einen Hunger im Mund, der sich nur durch Essen stillen lässt, obwohl ich körperlich satt bin.', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie gehst du mit Schuldgefühlen nach dem Essen um?',
+      options: [
+        { text: 'Ich fühle mich nach dem Essen nicht schuldig.', score: 0 },
+        { text: 'Manchmal habe ich nach dem Essen ein schlechtes Gewissen.', score: 1 },
+        { text: 'Ich habe fast immer starke Schuldgefühle oder Selbsthass nach dem Essen.', score: 3 },
+      ]
+    },
+    {
+      text: 'Was passiert, wenn du auf Diät bist und etwas "Verbotenes" isst?',
+      options: [
+        { text: 'Das passiert selten, und wenn, mache ich einfach weiter wie bisher.', score: 0 },
+        { text: 'Manchmal denke ich: "Jetzt ist es eh egal" und esse dann mehr als geplant.', score: 2 },
+        { text: 'Ich sage mir oft: "Jetzt ist es ohnehin ruiniert, also egal" und esse dann viel mehr.', score: 3 },
+        { text: 'Ich lebe zwischen strengen Diäten und totalen Essattacken. Alles oder nichts.', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie oft isst du so viel, dass du dich richtig voll und unwohl fühlst?',
+      options: [
+        { text: 'Selten bis nie.', score: 0 },
+        { text: 'Ungefähr einmal im Monat.', score: 1 },
+        { text: 'Regelmäßig, mehrmals im Monat.', score: 2 },
+        { text: 'Sehr regelmäßig, und ich fühle mich danach wirklich unwohl, manchmal sogar übel.', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie verhältst du dich nach einer Essattacke in puncto Essen?',
+      options: [
+        { text: 'Meine Kalorienmenge schwankt eigentlich kaum.', score: 0 },
+        { text: 'Ich esse danach manchmal deutlich weniger, um die Kalorien auszugleichen.', score: 1 },
+        { text: 'Ich esse abends oft zu viel und morgens kaum etwas.', score: 2 },
+        { text: 'Auf starke Essphasen folgen bei mir manchmal tagelange Hungerphasen.', score: 3 },
+      ]
+    },
+    {
+      text: 'Kannst du mit dem Essen aufhören, wenn du willst?',
+      options: [
+        { text: 'Ja, ich höre auf, wenn ich satt bin.', score: 0 },
+        { text: 'Manchmal spüre ich einen Drang zum Essen, den ich nicht gut steuern kann.', score: 1 },
+        { text: 'Ich erlebe regelmäßig starke Essimpulse, die ich manchmal kaum kontrollieren kann.', score: 2 },
+        { text: 'Ich habe das Gefühl, die Kontrolle verloren zu haben. Die Vorstellung, nicht aufhören zu können, macht mir Angst.', score: 3 },
+      ]
+    },
+    {
+      text: 'Schaffst du es, das Essen zu beenden, sobald du satt bist?',
+      options: [
+        { text: 'Ja, das ist kein Problem für mich.', score: 0 },
+        { text: 'Meistens schon, aber manchmal esse ich etwas zu viel.', score: 1 },
+        { text: 'Sobald ich angefangen habe, fällt mir das Aufhören schwer. Ich bin danach oft zu voll.', score: 2 },
+        { text: 'Ich kann so schlecht aufhören, dass ich mich manchmal erbreche, um das Völlegefühl loszuwerden.', score: 3 },
+      ]
+    },
+    {
+      text: 'Isst du vor anderen anders als allein?',
+      options: [
+        { text: 'Nein, das spielt keine Rolle für mich.', score: 0 },
+        { text: 'In Gesellschaft esse ich manchmal weniger, weil mir mein Essen peinlich wäre.', score: 1 },
+        { text: 'Ich esse vor anderen oft nur sehr wenig, weil ich mich schäme.', score: 2 },
+        { text: 'Ich esse heimlich, weil ich mich so sehr schäme. Ich bin eine Art "Geheimesserin".', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie sieht dein Essmuster aus?',
+      options: [
+        { text: 'Ich esse drei Mahlzeiten täglich, manchmal mit kleinen Snacks.', score: 0 },
+        { text: 'Drei Mahlzeiten plus regelmäßige Snacks.', score: 0 },
+        { text: 'Wenn ich viel snacke, lasse ich Mahlzeiten weg.', score: 2 },
+        { text: 'Ich habe kein geregeltes Essmuster, es ist einfach durchgehend.', score: 3 },
+      ]
+    },
+    {
+      text: 'Beschäftigt dich das Thema Essen und Kontrolle im Alltag?',
+      options: [
+        { text: 'Kaum, ich denke nicht viel darüber nach.', score: 0 },
+        { text: 'Manchmal bin ich damit beschäftigt, meine Essimpulse zu kontrollieren.', score: 1 },
+        { text: 'Ich verbringe oft Zeit damit, über das nachzudenken, was ich gegessen habe oder nicht essen sollte.', score: 2 },
+        { text: 'Fast der gesamte Tag dreht sich um Essen oder Nicht-Essen. Ich kämpfe ständig dagegen an.', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie stark sind Gedanken rund ums Essen in deinem Alltag präsent?',
+      options: [
+        { text: 'Nicht besonders, ich denke nicht viel ans Essen.', score: 0 },
+        { text: 'Manchmal habe ich starke Gelüste, die aber schnell wieder vergehen.', score: 1 },
+        { text: 'Es gibt Tage, an denen ich kaum an etwas anderes denken kann.', score: 2 },
+        { text: 'Fast alle meine Tage drehen sich ums Essen. Ich habe das Gefühl, nur zum Essen zu leben.', score: 3 },
+      ]
+    },
+    {
+      text: 'Wie gut erkennst du deinen eigenen Hunger?',
+      options: [
+        { text: 'Ich weiß meistens gut, wenn ich hungrig bin, und esse dann die richtige Menge.', score: 0 },
+        { text: 'Manchmal bin ich unsicher, ob ich wirklich hungrig bin, und weiß nicht, wie viel ich essen soll.', score: 1 },
+        { text: 'Ich weiß zwar, wie viele Kalorien ich bräuchte, aber was eine "normale" Essensmenge für mich ist, weiß ich nicht.', score: 2 },
+      ]
+    },
+  ],
+  en: [
+    {
+      text: 'How do you feel about your body when you are around others?',
+      options: [
+        { text: 'I don\'t feel self-conscious about my weight or body size when I\'m with others.', score: 0 },
+        { text: 'I feel concerned about how I look to others, but it normally does not make me feel disappointed with myself.', score: 0 },
+        { text: 'I do get self-conscious about my appearance and weight, and it makes me feel disappointed in myself.', score: 1 },
+        { text: 'I feel very self-conscious about my weight. I often feel intense shame and try to avoid social situations because of it.', score: 3 },
+      ]
+    },
+    {
+      text: 'How do you usually eat?',
+      options: [
+        { text: 'I don\'t have any difficulty eating slowly in the proper manner.', score: 0 },
+        { text: 'I sometimes eat quickly, but I don\'t end up feeling stuffed afterwards.', score: 1 },
+        { text: 'At times I tend to eat quickly and feel uncomfortably full afterwards.', score: 2 },
+        { text: 'I regularly bolt down my food without chewing properly and usually feel uncomfortably stuffed because I\'ve eaten too much.', score: 3 },
+      ]
+    },
+    {
+      text: 'How do you experience control over your eating?',
+      options: [
+        { text: 'I feel capable of controlling my eating urges when I want to.', score: 0 },
+        { text: 'I sometimes feel like I have failed to control my eating more than the average person.', score: 1 },
+        { text: 'I feel utterly helpless when it comes to controlling my eating urges.', score: 3 },
+        { text: 'I feel so helpless about controlling my eating that I have become desperate about trying to get back in control.', score: 3 },
+      ]
+    },
+    {
+      text: 'Do you eat when you are bored?',
+      options: [
+        { text: 'I don\'t have the habit of eating when I\'m bored.', score: 0 },
+        { text: 'Sometimes, but I\'m usually able to get busy and take my mind off food.', score: 0 },
+        { text: 'I have a regular habit of eating when bored, but occasionally I can use another activity instead.', score: 0 },
+        { text: 'I have a strong habit of eating when bored. Nothing seems to help me break it.', score: 2 },
+      ]
+    },
+    {
+      text: 'Do you eat without physical hunger?',
+      options: [
+        { text: 'I\'m usually physically hungry when I eat something.', score: 0 },
+        { text: 'Occasionally I eat something on impulse even though I\'m not really hungry.', score: 1 },
+        { text: 'I regularly eat foods I don\'t enjoy to satisfy a feeling of hunger even when I don\'t physically need food.', score: 2 },
+        { text: 'Even when I\'m not physically hungry, I get a hunger in my mouth that only seems satisfied when I eat.', score: 3 },
+      ]
+    },
+    {
+      text: 'Do you experience guilt or self-hatred after overeating?',
+      options: [
+        { text: 'I don\'t feel any guilt or self-hate after I overeat.', score: 0 },
+        { text: 'After I overeat, I occasionally feel guilt or self-hate.', score: 1 },
+        { text: 'Almost all the time I experience strong guilt or self-hate after I overeat.', score: 3 },
+      ]
+    },
+    {
+      text: 'What happens when you eat something "forbidden" while dieting?',
+      options: [
+        { text: 'I don\'t lose total control of my eating when dieting, even after I overeat.', score: 0 },
+        { text: 'Sometimes when I eat a "forbidden food" on a diet, I feel like I "blew it" and eat even more.', score: 2 },
+        { text: 'I frequently tell myself "I\'ve blown it now, why not go all the way" and then eat much more.', score: 3 },
+        { text: 'My life seems to be either a feast or a famine. I start strict diets and then binge.', score: 3 },
+      ]
+    },
+    {
+      text: 'How often do you eat until you feel uncomfortably full?',
+      options: [
+        { text: 'Rarely or never.', score: 0 },
+        { text: 'About once a month.', score: 1 },
+        { text: 'Regularly, several times a month.', score: 2 },
+        { text: 'Very regularly. I feel quite uncomfortable afterwards, sometimes even nauseous.', score: 3 },
+      ]
+    },
+    {
+      text: 'How do you adjust your eating after a binge?',
+      options: [
+        { text: 'My calorie intake doesn\'t go up or down much on a regular basis.', score: 0 },
+        { text: 'Sometimes after I overeat, I will try to reduce my intake to compensate.', score: 1 },
+        { text: 'I have a regular habit of overeating in the evening and barely eating in the morning.', score: 2 },
+        { text: 'I have week-long periods where I practically starve myself. Life is either feast or famine.', score: 3 },
+      ]
+    },
+    {
+      text: 'Can you stop eating when you want to?',
+      options: [
+        { text: 'Yes, I can stop when I want to. I know when enough is enough.', score: 0 },
+        { text: 'Every so often I experience a compulsion to eat that I can\'t seem to control.', score: 1 },
+        { text: 'Frequently I experience strong urges to eat that I seem unable to control.', score: 2 },
+        { text: 'I feel incapable of controlling urges to eat. The fear of not being able to stop scares me.', score: 3 },
+      ]
+    },
+    {
+      text: 'Do you have trouble stopping eating once you\'re full?',
+      options: [
+        { text: 'I don\'t have any problem stopping eating when I feel full.', score: 0 },
+        { text: 'I usually can stop eating when full, but occasionally overeat.', score: 1 },
+        { text: 'I have a problem stopping once I start and usually feel uncomfortably stuffed after a meal.', score: 2 },
+        { text: 'Because I can\'t stop when I want to, I sometimes have to force myself to vomit to relieve the fullness.', score: 3 },
+      ]
+    },
+    {
+      text: 'Do you eat differently around others than when alone?',
+      options: [
+        { text: 'I seem to eat just as much with others as when I\'m by myself.', score: 0 },
+        { text: 'Sometimes I don\'t eat as much as I want to around others because I feel self-conscious.', score: 1 },
+        { text: 'Frequently I eat only a small amount when others are present because I\'m embarrassed by my eating.', score: 2 },
+        { text: 'I feel so ashamed about overeating that I pick times to eat when no one will see me. I am a closet eater.', score: 3 },
+      ]
+    },
+    {
+      text: 'What does your eating pattern look like?',
+      options: [
+        { text: 'I eat three meals a day with only an occasional snack.', score: 0 },
+        { text: 'Three meals a day plus regular snacks.', score: 0 },
+        { text: 'When I snack heavily, I skip regular meals.', score: 2 },
+        { text: 'I seem to be continually eating, with no planned meals.', score: 3 },
+      ]
+    },
+    {
+      text: 'How much does the topic of food and control occupy your thoughts?',
+      options: [
+        { text: 'Not much at all. I don\'t think about trying to control unwanted eating urges.', score: 0 },
+        { text: 'At least some of the time I feel my thoughts are pre-occupied with controlling my eating urges.', score: 1 },
+        { text: 'I frequently spend much time thinking about how much I ate or about trying not to eat anymore.', score: 2 },
+        { text: 'Most of my waking hours are pre-occupied by thoughts about eating or not eating. I feel like I\'m constantly struggling.', score: 3 },
+      ]
+    },
+    {
+      text: 'How much do you think about food during the day?',
+      options: [
+        { text: 'I don\'t think about food a great deal.', score: 0 },
+        { text: 'I have strong cravings for food but they last only for brief periods of time.', score: 1 },
+        { text: 'I have days when I can\'t seem to think about anything else but food.', score: 2 },
+        { text: 'Most of my days seem to be pre-occupied with thoughts about food. I feel like I live to eat.', score: 3 },
+      ]
+    },
+    {
+      text: 'How well do you recognize physical hunger?',
+      options: [
+        { text: 'I usually know whether or not I\'m physically hungry and take the right portion to satisfy me.', score: 0 },
+        { text: 'Occasionally I feel uncertain about whether I\'m physically hungry and don\'t know how much to eat.', score: 1 },
+        { text: 'Even though I might know how many calories I should eat, I have no idea what a "normal" amount of food is for me.', score: 2 },
+      ]
+    },
+  ]
+};
+
+const therapyInfo = {
+  de: {
+    title: 'Was wirkt — Evidenzbasierte Behandlung',
+    kvt: {
+      name: 'Kognitive Verhaltenstherapie (KVT)',
+      text: 'KVT ist die am besten belegte Behandlung bei Binge Eating. Sie arbeitet direkt an den Gedankenmustern und Verhaltensweisen, die Binge-Eating-Episoden aufrechterhalten — zum Beispiel Körperbildsorgen und restriktives Essverhalten. Rund 60 % der Betroffenen erholen sich damit vollständig.',
+    },
+    ipt: {
+      name: 'Interpersonelle Psychotherapie (IPT)',
+      text: 'IPT setzt an Beziehungskonflikten und zwischenmenschlichen Spannungen an, die Binge-Episoden auslösen. Die Wirkung zeigt sich oft langsamer als bei KVT, ist aber nachhaltig. Rund 70 % der Betroffenen erholen sich langfristig.',
+    },
+  },
+  en: {
+    title: 'What works — Evidence-Based Treatment',
+    kvt: {
+      name: 'Cognitive Behavioural Therapy (CBT)',
+      text: 'CBT is the most well-supported treatment for binge eating. It works directly on the thought patterns and behaviors that maintain binge eating episodes — such as body image concerns and restrictive eating. Around 60% of people recover fully with CBT.',
+    },
+    ipt: {
+      name: 'Interpersonal Psychotherapy (IPT)',
+      text: 'IPT addresses relationship conflicts and interpersonal tensions that trigger binge episodes. Results often take longer to appear than with CBT, but are sustained. Around 70% of people recover long-term.',
+    },
+  },
+};
+
+const spectrumLabels = {
+  de: ['Gesundes Essverhalten', 'Gestörtes Essverhalten', 'Essstörung'],
+  en: ['Healthy Eating', 'Disordered Eating', 'Eating Disorder'],
+};
+
+const results = {
+  de: [
+    {
+      range: [0, 17],
+      severity: 'none',
+      label: 'Kein Binge Eating',
+      title: 'Dein Ergebnis: Kein Binge Eating',
+      subtitle: 'Keine relevanten Anzeichen einer Binge-Eating-Störung in diesem Screening.',
+      intro: 'Dein Ergebnis zeigt keine relevanten Anzeichen einer Binge-Eating-Störung. Essverhalten existiert dennoch auf einem Spektrum — man muss keine klinische Essstörung haben, um mit dem Essen zu strugglen. Wenn du das Gefühl hast, dass etwas nicht stimmt, ist das ein guter Grund, genauer hinzuschauen. Deine Beziehung zum Essen beeinflusst dein Essverhalten — und genau daran arbeiten wir bei Flonu.',
+      spectrumPosition: 0,
+      tips: [
+        { icon: '🔍', title: 'Muster beobachten', text: 'Gesundes Essverhalten heißt nicht perfektes Essen. Es heißt: du isst, wenn du hungrig bist, hörst auf, wenn du satt bist, und machst dir danach keine Gedanken mehr darüber. Keine verbotenen Lebensmittel, keine erlaubten.' },
+        { icon: '📋', title: 'Das Spektrum kennen', text: 'Zwischen gesundem Essverhalten und einer klinischen Essstörung gibt es ein breites Spektrum, das kaum jemand benennt: Gedanken, die sich zu viel ums Essen drehen. Regeln, die du ständig brichst. Schuldgefühle nach dem Essen. Das sind keine Charakterprobleme. Das sind erlernte Muster — und sie lassen sich verändern.' },
+        { icon: '🌱', title: 'Nächster Schritt', text: 'Wenn du an deiner Beziehung zum Essen arbeiten möchtest, bin ich bei <a href="https://flonu.de" target="_blank" style="color:#4a7c59;font-weight:600;">flonu.de</a> für dich da.' },
+      ],
+      showTherapy: false,
+    },
+    {
+      range: [18, 26],
+      severity: 'mild',
+      label: 'Leichtes bis moderates Binge Eating',
+      title: 'Dein Ergebnis: Leichtes bis moderates Binge Eating',
+      subtitle: 'Dein Ergebnis deutet auf Essmuster hin, die belastend sein können.',
+      intro: 'Dein Ergebnis deutet auf leichte bis moderate Binge-Eating-Muster hin. Das bedeutet, dass du Essverhalten zeigst, das belastend sein kann, auch wenn es dir vielleicht nicht immer so vorkommt. Das heißt nicht, dass du eine Binge-Eating-Störung hast — das kann dieses Tool nicht diagnostizieren. Aber die Ergebnisse zeigen, dass es sich lohnt, genauer hinzuschauen und sich mit deinem Essverhalten auseinanderzusetzen: also warum du isst, nicht nur was du isst. Du bist damit auf keinen Fall allein, und es gibt Unterstützung, die wirklich hilft.',
+      spectrumPosition: 1,
+      tips: [
+        { icon: '📓', title: 'Essverhalten beobachten', text: 'Schreib auf, wann, wo und was du isst — nicht um Kalorien zu zählen, sondern um Muster zu erkennen. Wann kommen die Impulse? Was passiert davor? Diese Information hilft dir zu verstehen, was dein Essverhalten wirklich antreibt.' },
+        { icon: '🕐', title: 'Regelmäßige Mahlzeiten', text: 'Mindestens drei Mahlzeiten täglich, nicht mehr als 4 Stunden auseinander. Hunger ist einer der stärksten Auslöser für Binge-Episoden. Struktur hilft dem Körper, sich wieder zu kalibrieren.' },
+        { icon: '🎯', title: 'Alternativen finden', text: 'Eine Liste von Aktivitäten, die du einsetzen kannst, wenn der Impuls kommt — spazieren gehen, jemanden anrufen, etwas lesen. Einen Impuls einmal zu widerstehen macht es beim nächsten Mal leichter.' },
+        { icon: '💬', title: 'Nächster Schritt', text: 'Ich empfehle dir, das Gespräch mit einer Fachkraft zu suchen, die Essstörungen kennt — das sind meistens Therapeutinnen und Therapeuten. Als Nutrition- und Behaviour-Change-Coach kann ich dich begleiten, aber Therapie kommt zuerst. Coaching kann parallel laufen. Meld dich bei <a href="https://flonu.de" target="_blank" style="color:#4a7c59;font-weight:600;">flonu.de</a>.' },
+      ],
+      showTherapy: true,
+    },
+    {
+      range: [27, 46],
+      severity: 'severe',
+      label: 'Binge Eating',
+      title: 'Dein Ergebnis: Binge Eating',
+      subtitle: 'Dein Ergebnis liegt im Bereich Binge Eating. Professionelle Unterstützung ist der richtige nächste Schritt.',
+      intro: 'Dein Ergebnis liegt im Bereich Binge Eating. Was du erlebst, ist belastend — und professionelle Unterstützung ist hier der richtige nächste Schritt. Bitte wende dich an eine Fachkraft, die auf Essstörungen spezialisiert ist. In Deutschland erreichst du die BZgA unter <strong>0221 892031</strong> oder findest Beratungsstellen unter <a href="https://bzga-essstoerungen.de" target="_blank" style="color:#4a7c59;font-weight:600;">bzga-essstoerungen.de</a>.',
+      spectrumPosition: 2,
+      tips: [
+        { icon: '📓', title: 'Muster sichtbar machen', text: 'Schreib täglich auf, wann, wo und was du isst, wie hungrig du vorher warst und was du dabei gedacht oder gefühlt hast. Nicht als Kontrolle — als Information. Muster werden erst sichtbar, wenn du hinschaust.' },
+        { icon: '🕐', title: 'Struktur zurückgewinnen', text: 'Mindestens drei Mahlzeiten täglich, nicht mehr als 4 Stunden auseinander — auch wenn du keinen Hunger spürst. Dein Körper hat den Hunger-Sättigungs-Rhythmus verloren. Struktur hilft, ihn zurückzugewinnen.' },
+        { icon: '🎯', title: 'Impulse umleiten', text: 'Schreib dir eine Liste von Aktivitäten auf, die du einsetzen kannst, wenn ein Binge-Impuls kommt: jemanden anrufen, spazieren gehen, etwas lesen. Impulse vergehen — wenn du wartest.' },
+        { icon: '💬', title: 'Nächster Schritt', text: 'Das sind meistens Therapeutinnen und Therapeuten. Als Nutrition- und Behaviour-Change-Coach kann ich dich in diesem Prozess begleiten — aber Therapie kommt zuerst. Coaching kann parallel laufen. Meld dich bei mir, wenn du nicht weißt, wo du anfangen sollst: <a href="https://flonu.de" target="_blank" style="color:#4a7c59;font-weight:600;">flonu.de</a>.' },
+      ],
+      showTherapy: true,
+    },
+  ],
+  en: [
+    {
+      range: [0, 17],
+      severity: 'none',
+      label: 'No Binge Eating',
+      title: 'Your Result: No Binge Eating',
+      subtitle: 'This screening shows no significant signs of binge eating behavior.',
+      intro: 'Your result shows no significant signs of a binge eating disorder. Eating behavior still exists on a spectrum — you don\'t need a clinical eating disorder to struggle with food. If something feels off, that\'s a good reason to look more closely. Your relationship with food influences your eating behavior — and that\'s exactly what we work on at Flonu.',
+      spectrumPosition: 0,
+      tips: [
+        { icon: '🔍', title: 'Recognize the spectrum', text: 'Healthy eating doesn\'t mean perfect eating. It means: you eat when you\'re hungry, stop when you\'re full, and don\'t think about it afterwards. No forbidden foods, no allowed foods.' },
+        { icon: '📋', title: 'Know where you stand', text: 'Between healthy eating and a clinical eating disorder, there\'s a wide spectrum that rarely gets named: thoughts that revolve too much around food. Rules you constantly break. Guilt after eating. These aren\'t character flaws. They\'re learned patterns — and they can change.' },
+        { icon: '🌱', title: 'Next step', text: 'If you want to work on your relationship with food, I\'m here at <a href="https://flonu.de" target="_blank" style="color:#4a7c59;font-weight:600;">flonu.de</a>.' },
+      ],
+      showTherapy: false,
+    },
+    {
+      range: [18, 26],
+      severity: 'mild',
+      label: 'Mild to Moderate Binge Eating',
+      title: 'Your Result: Mild to Moderate Binge Eating',
+      subtitle: 'Your result points to eating patterns that can be distressing.',
+      intro: 'Your result suggests mild to moderate binge eating patterns. This means you\'re showing behaviors that can be distressing, even if they don\'t always feel that way. This doesn\'t mean you have a binge eating disorder — this tool cannot diagnose that. But the results show it\'s worth looking more closely at your eating behavior: not just what you eat, but why. You\'re not alone in this, and there is support that genuinely helps.',
+      spectrumPosition: 1,
+      tips: [
+        { icon: '📓', title: 'Monitor your eating', text: 'Write down when, where, and what you eat — not to count calories, but to spot patterns. When do the urges come? What happens beforehand? This information helps you understand what\'s really driving your eating behavior.' },
+        { icon: '🕐', title: 'Eat regularly', text: 'At least three meals a day, no more than 4 hours apart. Hunger is one of the strongest binge triggers. Structure helps your body recalibrate.' },
+        { icon: '🎯', title: 'Find alternatives', text: 'Build a list of activities you can use when the urge comes — go for a walk, call someone, read something. Resisting an urge once makes it easier the next time.' },
+        { icon: '💬', title: 'Next step', text: 'I recommend speaking with a professional who specializes in eating disorders — usually a therapist. As a nutrition and behaviour change coach, I can support you in this process, but therapy comes first. Coaching can run alongside it. Reach out at <a href="https://flonu.de" target="_blank" style="color:#4a7c59;font-weight:600;">flonu.de</a>.' },
+      ],
+      showTherapy: true,
+    },
+    {
+      range: [27, 46],
+      severity: 'severe',
+      label: 'Binge Eating',
+      title: 'Your Result: Binge Eating',
+      subtitle: 'Your result is in the binge eating range. Professional support is the right next step.',
+      intro: 'Your result is in the binge eating range. What you\'re experiencing is distressing — and professional support is the right next step. Please reach out to a specialist in eating disorders. In Germany, you can contact the BZgA at <strong>0221 892031</strong> or find local support at <a href="https://bzga-essstoerungen.de" target="_blank" style="color:#4a7c59;font-weight:600;">bzga-essstoerungen.de</a>.',
+      spectrumPosition: 2,
+      tips: [
+        { icon: '📓', title: 'Make patterns visible', text: 'Write down daily when, where, and what you eat, how hungry you were beforehand, and what you were thinking or feeling. Not as control — as information. Patterns only become visible when you look.' },
+        { icon: '🕐', title: 'Rebuild structure', text: 'At least three meals a day, no more than 4 hours apart — even if you don\'t feel hungry. Your body has lost its hunger-satiety rhythm. Structure helps rebuild it.' },
+        { icon: '🎯', title: 'Redirect urges', text: 'Write a list of activities you can use when a binge urge hits: call someone, go for a walk, read something. Urges pass — if you wait.' },
+        { icon: '💬', title: 'Next step', text: 'These are usually therapists. As a nutrition and behaviour change coach, I can support you through this process — but therapy comes first. Coaching can run alongside it. Reach out if you don\'t know where to start: <a href="https://flonu.de" target="_blank" style="color:#4a7c59;font-weight:600;">flonu.de</a>.' },
+      ],
+      showTherapy: true,
+    },
+  ]
+};
+
+// STATE
+let lang = 'de';
+let currentQ = 0;
+let answers = new Array(16).fill(null);
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
+  document.getElementById('hero-tag').textContent = translations[l].heroTag;
+  document.getElementById('hero-title').innerHTML = translations[l].heroTitle;
+  document.getElementById('hero-desc').textContent = translations[l].heroDesc;
+  if (currentQ < questions[lang].length) {
+    renderQuestion();
+  }
+}
+
+function getResult(score) {
+  return results[lang].find(r => score >= r.range[0] && score <= r.range[1]);
+}
+
+function getScoreColor(score) {
+  if (score <= 17) return '#b5c84b';
+  if (score <= 26) return '#f0c93a';
+  return '#b83060';
+}
+
+function renderQuestion() {
+  const t = translations[lang];
+  const q = questions[lang][currentQ];
+  const total = questions[lang].length;
+  const pct = Math.round(((currentQ) / total) * 100);
+
+  document.getElementById('progress-wrap').style.display = 'block';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = t.progressLabel(currentQ + 1, total);
+  document.getElementById('progress-pct').textContent = pct + ' %';
+
+  const isLast = currentQ === total - 1;
+
+  let optionsHTML = q.options.map((opt, i) => `
+    <li>
+      <button class="option-btn ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+        <span class="option-dot"></span>
+        <span>${opt.text}</span>
+      </button>
+    </li>
+  `).join('');
+
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="question-card">
+      <div class="q-counter">${t.qCounter(currentQ + 1)}</div>
+      <div class="q-text">${q.text}</div>
+      <ul class="options-list">${optionsHTML}</ul>
+      <div class="nav-row">
+        ${currentQ > 0 ? `<button class="btn btn-back" onclick="goBack()">${t.btnBack}</button>` : '<div></div>'}
+        ${isLast
+          ? `<button class="btn btn-submit" onclick="submitQuiz()" ${answers[currentQ] === null ? 'disabled' : ''}>${t.btnSubmit}</button>`
+          : `<button class="btn btn-next" onclick="goNext()" ${answers[currentQ] === null ? 'disabled' : ''}>${t.btnNext}</button>`}
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  answers[currentQ] = i;
+  renderQuestion();
+}
+
+function goNext() {
+  if (answers[currentQ] === null) return;
+  currentQ++;
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() {
+  currentQ--;
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function submitQuiz() {
+  const t = translations[lang];
+  let score = 0;
+  answers.forEach((answerIdx, qIdx) => {
+    if (answerIdx !== null && questions[lang][qIdx]) {
+      score += questions[lang][qIdx].options[answerIdx].score;
+    }
+  });
+
+  const result = getResult(score);
+  const strokeColor = getScoreColor(score);
+  const circumference = 2 * Math.PI * 44;
+  const pct = Math.round((score / 46) * 100);
+  const dashOffset = circumference - (pct / 100) * circumference;
+
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-text').textContent = t.progressLabel(16, 16);
+  document.getElementById('progress-pct').textContent = '100 %';
+
+  // Spectrum SVG
+  const specLabels = spectrumLabels[lang];
+  const specPos = result.spectrumPosition;
+  const specColors = ['#b5c84b', '#f0c93a', '#b83060'];
+  const specBgColors = ['rgba(181,200,75,0.15)', 'rgba(240,201,58,0.15)', 'rgba(184,48,96,0.12)'];
+  const spectrumSVG = `
+    <svg viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:0 auto;">
+      <!-- Arrow shape -->
+      <defs>
+        <linearGradient id="specGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#b5c84b;stop-opacity:0.7"/>
+          <stop offset="50%" style="stop-color:#f0c93a;stop-opacity:0.7"/>
+          <stop offset="100%" style="stop-color:#b83060;stop-opacity:0.7"/>
+        </linearGradient>
+      </defs>
+      <polygon points="0,20 380,20 420,40 380,60 0,60" fill="url(#specGrad)" rx="4"/>
+      <!-- Dividers -->
+      <line x1="140" y1="20" x2="140" y2="60" stroke="white" stroke-width="1.5" opacity="0.6"/>
+      <line x1="280" y1="20" x2="280" y2="60" stroke="white" stroke-width="1.5" opacity="0.6"/>
+      <!-- Labels -->
+      <text x="70" y="44" text-anchor="middle" font-size="9" font-weight="600" fill="#1a3a2f" font-family="sans-serif">${specLabels[0]}</text>
+      <text x="210" y="44" text-anchor="middle" font-size="9" font-weight="600" fill="#1a3a2f" font-family="sans-serif">${specLabels[1]}</text>
+      <text x="335" y="44" text-anchor="middle" font-size="9" font-weight="600" fill="#1a3a2f" font-family="sans-serif">${specLabels[2]}</text>
+      <!-- Active indicator -->
+      <circle cx="${specPos === 0 ? 70 : specPos === 1 ? 210 : 335}" cy="40" r="14" fill="${specColors[specPos]}" opacity="0.9"/>
+      <text x="${specPos === 0 ? 70 : specPos === 1 ? 210 : 335}" y="44" text-anchor="middle" font-size="10" font-weight="900" fill="white" font-family="sans-serif">●</text>
+    </svg>`;
+
+  // Tips HTML
+  const tipsHTML = result.tips.map(tip => `
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:var(--almond);border-radius:12px;margin-bottom:10px;">
+      <span style="font-size:1.4rem;flex-shrink:0;margin-top:2px;">${tip.icon}</span>
+      <div>
+        <div style="font-size:0.78rem;font-weight:700;color:var(--midnight-moss);margin-bottom:4px;letter-spacing:0.03em;">${tip.title}</div>
+        <div style="font-size:0.85rem;font-weight:300;color:var(--text-dark);line-height:1.65;">${tip.text}</div>
+      </div>
+    </div>`).join('');
+
+  // Therapy HTML (groups 2 & 3)
+  const th = therapyInfo[lang];
+  const therapyHTML = result.showTherapy ? `
+    <div class="divider"></div>
+    <div class="results-section-title">${th.title}</div>
+    <div style="display:grid;gap:12px;margin-bottom:4px;">
+      <div style="background:rgba(74,124,89,0.07);border-left:3px solid var(--thyme);border-radius:0 12px 12px 0;padding:16px 18px;">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--thyme);margin-bottom:6px;">${th.kvt.name}</div>
+        <div style="font-size:0.84rem;font-weight:300;color:var(--text-dark);line-height:1.65;">${th.kvt.text}</div>
+      </div>
+      <div style="background:rgba(74,124,89,0.07);border-left:3px solid var(--thyme);border-radius:0 12px 12px 0;padding:16px 18px;">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--thyme);margin-bottom:6px;">${th.ipt.name}</div>
+        <div style="font-size:0.84rem;font-weight:300;color:var(--text-dark);line-height:1.65;">${th.ipt.text}</div>
+      </div>
+    </div>` : '';
+
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="results-card">
+
+      <!-- Score ring + badge -->
+      <div class="score-ring-wrap">
+        <div class="score-ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="44" fill="none" stroke="rgba(74,124,89,0.12)" stroke-width="10"/>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10"
+              stroke-dasharray="${circumference}" stroke-dashoffset="${dashOffset}" stroke-linecap="round"/>
+          </svg>
+          <div class="score-num">
+            <span class="num">${score}</span>
+            <span class="of">${t.scoreOf}</span>
+          </div>
+        </div>
+        <span class="severity-badge severity-${result.severity}">${result.label}</span>
+        <div class="results-title">${result.title}</div>
+        <div class="results-subtitle">${result.subtitle}</div>
+      </div>
+
+      <!-- Spectrum -->
+      <div class="divider"></div>
+      <div class="results-section-title" style="margin-bottom:14px;">${lang === 'de' ? 'Essverhalten — ein Spektrum' : 'Eating Behavior — a Spectrum'}</div>
+      <div style="margin-bottom:6px;">${spectrumSVG}</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--thyme);font-weight:300;margin-bottom:4px;padding:0 4px;">
+        ${specLabels.map((l, i) => `<span style="text-align:${i===0?'left':i===1?'center':'right'};flex:1;${i===specPos?'font-weight:700;color:var(--midnight-moss);':''}">${l}</span>`).join('')}
+      </div>
+
+      <!-- Intro text -->
+      <div class="divider"></div>
+      <div style="font-size:0.9rem;font-weight:300;color:var(--text-dark);line-height:1.75;margin-bottom:4px;">${result.intro}</div>
+
+      <!-- Tips -->
+      <div class="divider"></div>
+      <div class="results-section-title" style="margin-bottom:12px;">${lang === 'de' ? 'Was du jetzt tun kannst' : 'What you can do now'}</div>
+      ${tipsHTML}
+
+      <!-- Therapy info -->
+      ${therapyHTML}
+
+      <!-- Disclaimer -->
+      <div class="divider"></div>
+      <div class="disclaimer">
+        <div class="results-section-title" style="margin-bottom:6px;">${t.disclaimerLabel}</div>
+        <p>${t.disclaimer}</p>
+      </div>
+
+      <!-- Source -->
+      <div class="source-note">
+        ${t.sourceLabel}: ${t.source}<br>
+        <a href="https://flonu.de" target="_blank">flonu.de</a>
+      </div>
+
+      <button class="btn-restart" onclick="restart()">${t.btnRestart}</button>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  currentQ = 0;
+  answers = new Array(16).fill(null);
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// INIT
+renderQuestion();
+
+
+</script>
+</body>
+</html>
